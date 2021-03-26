@@ -7,16 +7,24 @@
         <link rel="stylesheet" href="main.css"/>
         <!--Feel free to add more CSS files as needed-->
         <script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script>
+        <!--use topojson for basic wordmap-->
+        <script src="https://unpkg.com/topojson@3.0.2/dist/topojson.min.js"></script>
     </head>
 <body>
     <div class="header">
-        <h3>Assignment 6 &laquo; Data Visualization Dashboard &raquo;</h3>
+        <h3>Popular Video Games and Publishers &laquo; Data Visualization Dashboard &raquo;</h3>
+    </div>
+    <div class="center">
+        <!-- Add a slider -->
+        <!--<label id="yearlabel" for="yearrange">Search Year Range: </label>
+        <input id = "yearrange" type="range" class = "muti-range" min="1981" max="2016" step="1">-->
     </div>
     <!--  We included a basic HTML structure for the 3 graphs here. Feel free to change this if you'd like  -->
     <div class="row">
         <div class="col-lg-6">
             <div id="graph1"></div>
             <div id="graph2"></div><br/>
+            <p style ="font-size: 12px; fill: #635F5D;"><center>* Hover over to see the top genre in each sales region and scroll to zoom in and out </center></p>
         </div>
         <div class="col-lg-6">
             <div id="graph3"></div>
@@ -24,5 +32,7 @@
     </div>
     <!--Feel free to add more JavaScript files as needed-->
     <script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src="barplot.js"></script>
+    <script type="text/javascript" src="map.js"></script>
 </body>
 </html>

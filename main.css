@@ -1,3 +1,8 @@
+svg {
+    display: block;
+    margin: 0 auto;
+}
+
 .header {
     padding-bottom: 20px;
     margin-bottom: 20px;
@@ -9,4 +14,36 @@
     text-align: center;
 }
 
+text{
+    font-size: 15px;
+}
+
+.tick text{
+    font-size: 15px;
+    fill: #635F5D;
+}
+
+.title{
+    font-size: 18px;
+}
+
+.label_text{
+    font-size: 15px;
+    fill: #635F5D;
+}
 /* Include any custom CSS styling here! */
+.sphere{
+  fill: #bde0fe;
+  opacity: 0.6;
+}
+
+.countries {
+  stroke: white;
+  stroke-width: 0.3px;
+}
+
+.tooltip{
+    background: white;
+    background-opacity: 0.2;
+    font-size: 14px;
+}
