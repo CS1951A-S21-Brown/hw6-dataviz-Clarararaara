@@ -1,6 +1,6 @@
 // Add your JavaScript code here
 const MAX_WIDTH = Math.max(1080, window.innerWidth);
-const MAX_HEIGHT = 1500;
+const MAX_HEIGHT = 2000;
 const margin = {top: 60, right: 450, bottom: 60, left: 500};
 const NUM_EXAMPLES = 10; //select top 10
 
@@ -17,6 +17,8 @@ slider.on('sliderStop', function(range){
     end = range[1];
     updateGraph(start, end, )})
 */
+
+let select = d3.select('#genreSelect').on('change', update)
 
 // set constant
 
@@ -73,7 +75,10 @@ function platdisplay(select_plat){
     }
 }
 
-
+function update(){
+    let select_genre = select.property('selectedOptions')[0].value;
+    updateDonut(select_genre)
+}
 
 function updateGraph(start, end){
      dataupdate(start, end)

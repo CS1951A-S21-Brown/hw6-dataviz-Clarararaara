@@ -66,6 +66,8 @@ Promise.all([
                                });
     let filter_data2 = gameData.filter(d => {return yearrange(start, end, d.Year);})
                             .filter(d => {return chooseSelection(select_plat, d.Platform);})
+
+    // get the top genre by the local scales depending on regions
     let globaltopdata = cleanData(filter_data2, function(a, b){ return b.Global_Sales - a.Global_Sales;}, 1);
     let EUtopdata = cleanData(filter_data2, function(a,b){return b.EU_Sales - a.EU_Sales;}, 1);
     let NAtopdata = cleanData(filter_data2, function(a,b){return b.NA_Sales - a.NA_Sales;}, 1);

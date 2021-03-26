@@ -91,6 +91,7 @@ d3.csv("./data/video_games.csv").then(function(data) {
             .append("rect")
             .merge(bars)
             .attr("fill", d => color(yValue(d)))
+            .style('opacity', 0.8)
             .transition()
             .duration(1000)
             .attr("x", x(0))
