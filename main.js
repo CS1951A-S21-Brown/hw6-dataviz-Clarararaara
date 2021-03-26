@@ -1,13 +1,13 @@
 // Add your JavaScript code here
 const MAX_WIDTH = Math.max(1080, window.innerWidth);
-const MAX_HEIGHT = 720;
-const margin = {top: 60, right: 350, bottom: 60, left: 500};
+const MAX_HEIGHT = 1500;
+const margin = {top: 60, right: 450, bottom: 60, left: 500};
 const NUM_EXAMPLES = 10; //select top 10
 
 // Assumes the same graph width, height dimensions as the example dashboard. Feel free to change these if you'd like
 let graph_1_width = MAX_WIDTH , graph_1_height = 400;
 let graph_2_width = MAX_WIDTH , graph_2_height = 550;
-let graph_3_width = MAX_WIDTH / 2, graph_3_height = 575;
+let graph_3_width = MAX_WIDTH , graph_3_height = 400;
 
 /*
 let slider = new Slider('#yearrange', {})
@@ -23,6 +23,7 @@ slider.on('sliderStop', function(range){
 let start = 1981;
 let end = 2017;
 let select_plat = 'All'
+let select_genre = 'Sports'
 
 
 
@@ -45,14 +46,16 @@ function yearrange(start, end, year){
     }
 }
 
-// Filter platform based on selection
-function choosePlatform(select_plat, platform){
-    if(select_plat === 'All'){
+// Filter platform or genre based on selection
+function chooseSelection(select, origin){
+    if(select === 'All'){
         return (true);
     }else{
-        return (platform === select_plat);
+        return (origin === select);
     }
 }
+
+
 // display selected year as (start_year-end_year) or as (year)
 function yeardisplay(start, end){
     if(start === end){
@@ -69,6 +72,8 @@ function platdisplay(select_plat){
         return (select_plat);
     }
 }
+
+
 
 function updateGraph(start, end){
      dataupdate(start, end)

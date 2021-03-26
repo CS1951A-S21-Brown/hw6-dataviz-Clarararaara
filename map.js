@@ -1,6 +1,6 @@
 
 // 2nd graph
-// set graph1 inner width and height
+// set graph2 inner width and height
 const innerwidth_2 = graph_2_width - margin.left - margin.right;
 const innerheight_2 = graph_2_height - margin.top - margin.bottom;
 let regionSelect = 'Europe'
@@ -14,7 +14,7 @@ const projection = d3.geoNaturalEarth1();
 const pathGenerator = d3.geoPath().projection(projection)
 //projection reference: https://github.com/d3/d3-geo
 
-const svg_map = svgG.append('g').attr('transform', `translate(${margin.left+50}, ${margin.top})`) //set a mapgroup with the given position
+const svg_map = svgG.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`) //set a mapgroup with the given position
 
 //add in zoom effect
 svgG.call(d3.zoom().on('zoom', () => {
@@ -30,7 +30,7 @@ svg_map.append('path')
 
  // set the legend group with the position
 const legendG = svgG.append('g')
-    .attr('transform', `translate(${margin.left}, ${7*margin.top})`)
+    .attr('transform', `translate(${margin.left* (2/3)}, ${innerheight_2 - 20})`)
 
 let tooltip = d3.select("#graph2")     // HINT: div id for div containing scatterplot
         .append("div")
@@ -65,7 +65,7 @@ Promise.all([
                       d.Global_Sales = parseFloat(d.Global_Sales);
                                });
     let filter_data2 = gameData.filter(d => {return yearrange(start, end, d.Year);})
-                            .filter(d => {return choosePlatform(select_plat, d.Platform);})
+                            .filter(d => {return chooseSelection(select_plat, d.Platform);})
     let globaltopdata = cleanData(filter_data2, function(a, b){ return b.Global_Sales - a.Global_Sales;}, 1);
     let EUtopdata = cleanData(filter_data2, function(a,b){return b.EU_Sales - a.EU_Sales;}, 1);
     let NAtopdata = cleanData(filter_data2, function(a,b){return b.NA_Sales - a.NA_Sales;}, 1);

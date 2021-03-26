@@ -62,7 +62,7 @@ d3.csv("./data/video_games.csv").then(function(data) {
                            });
         // filter the data based on year and platform
         let filter_data = data.filter(d => {return yearrange(start, end, d.Year);})
-                            .filter(d => {return choosePlatform(select_plat, d.Platform);})
+                            .filter(d => {return chooseSelection(select_plat, d.Platform);})
 
         let comparator = function(a, b){ return b.Global_Sales - a.Global_Sales;}
         let Topdata = cleanData(filter_data, comparator, NUM_EXAMPLES);
