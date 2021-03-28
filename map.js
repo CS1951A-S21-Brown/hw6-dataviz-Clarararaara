@@ -25,7 +25,7 @@ function updateMap(start_year, end_year, plat){
     .append("svg")
     .attr("width", graph_2_width)     // HINT: width
     .attr("height", graph_2_height)     // HINT: height
-    .attr('transform', `translate(${margin.left}, ${margin.top})`);
+    .attr('transform', `translate(${margin.left -40}, ${margin.top})`);
 
     const projection = d3.geoNaturalEarth1().scale(graph_2_width/7);
     const pathGenerator = d3.geoPath().projection(projection)

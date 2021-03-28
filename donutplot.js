@@ -98,7 +98,7 @@ function updateDonut(start, end, select_plat, select_genre){
             .duration(1000)
                 .attr('stroke', '#635F5D')
                 .style('fill', 'none')
-                .attr('stroke-width', '2px')
+                .attr('stroke-width', '1.5px')
                 .attr('points', labelLine) // adjust the length and position accordingly
 ;
 
@@ -133,11 +133,16 @@ function updateDonut(start, end, select_plat, select_genre){
 //            .duration(1000)
             .attr('class', 'donut_label')
             .text(d => 'Total Global Sales: ' + d.data.sales +' M')
-            .attr('transform', textLabel)
-            .attr('y', 18)
+            .attr('transform', function (d){
+                const labelPos = outerArc.centroid(d);
+                const angle = d.startAngle + (d.endAngle - d.startAngle) / 2
+                labelPos[0] = (radius*0.8) * (angle < Math.PI ? 1 : -1);
+                return `translate(${labelPos})`
+            })
+            .attr('y', 16)
             .style('text-anchor', labelDir)
             .style('font-style', 'italic')
-            .style('font-size', '13.5px');
+            .style('font-size', '12px');
             // edit Title
             donutTitle
             .text('Top 5 Publishers of ' + platdisplay(select_genre) +' Games ' + yeardisplay(start, end));

@@ -14,14 +14,14 @@
     </head>
 <body>
     <div class="header">
-        <h3>Popular Video Games and Publishers &laquo; Data Visualization Dashboard &raquo;</h3>
+        <h3>Popular Video Games, Genre and Publishers </h3>
+        <h5>Tracking video games sales under selected year(s) and platform</h5>
     </div>
 
     <!--  We included a basic HTML structure for the 3 graphs here. Feel free to change this if you'd like  -->
     <div class="row">
         <div class="text-center">
-        <div class="col-lg-12">
-            <div class="center">
+             <div class="center">
     <!-- Add a slider -->
                 <label id="yearlabel" for="yearrange">Year Range: </label>
                 <input id = "yearrange" type="text" data-provide="slider"
@@ -30,7 +30,7 @@
                         data-slider-handle = 'triangle'/>
             </div>
              <!-- Add a dropdown for game platforms-->
-            <div class="center">
+            <div class="center" id = 'dropdown1'>
                 <span class = 'dropdown_text'>
                     Select Game Platform:
                 </span>
@@ -62,12 +62,17 @@
                     <option value = 'XOne' >XOne</option>
 
                 </select>
+            <center class = 'annotation'><p>* Select the year or range of years and the game platform to see the popular games, genre and publisher under your selection. </p></center>
             </div>
+        <div class="col-lg-6">
             <div id="graph1"></div>
-            <p ><center class = 'annotation'>* Note that if you select all platforms, there will be a chance that the same game name occurs more than once with overlapped bars </center></p>
+            <center class = 'annotation'><p>* Note: if you select all platforms, there will be the chance that the same game name occurs more than once with overlapped bars </p></center>
             <div id="graph2"></div><br/>
-            <p ><center class = 'annotation'>* Hover over the map to see the top genre in each sales region and scroll the page to zoom in and out </center></p>
-            <div class = 'center'>
+            <center class = 'annotation'><p>* Hover over the map to see the top genre in each sales region and scroll the page to zoom in and out </p></center>
+
+            </div>
+            <div class="col-lg-6">
+                <div class = 'center' id = 'dropdown2'>
                 <span class = 'dropdown_text'>
                     Select Game Genre:
                 </span>
@@ -86,10 +91,8 @@
                     <option value = 'Simulation'>Strategy</option>
                 </select>
             </div>
-            <div class="col-lg-12">
             <div id="graph3"></div>
-        </div>
-            <p ><center class = 'annotation'>* Select game genre to see the top 5 publishers in the field given the year range and platform selected </center></p>
+            <center class = 'annotation'><p>* Select game genre to see the top 5 publishers in the field given the year range and platform selected </p></center>
     </div>
     </div>
     </div>
@@ -102,16 +105,101 @@
         <h3>&laquo; Written Question &raquo;</h3>
     </div>
     <div id="WrittenQ">
-        <p><center>
+        <p style = 'font-weight: bold'>
+            Q1:
+        </p>
+        <p>
         The dataset I picked is the video game data. After inspecting the data, I understand that the dataset had the name of games,
         platforms, publishers, and sales in different regions. For the first question I need to display the top 10 games of all time or
-        a specific year. In order to address that I planned to make a bar plot of the top 10 games sorted by global sales and the sale amounts
-        are shown in the x axis. I would like to display all time and in a selected range of the year. Therefore, I added a range slider to select given
-        range of years that users want to see. As default, the top 10 games from 1980 to 2020 (all times) is shown. If people want to look at a specific year,
-        they can drag the slider handles together focus on one year.
-        The video game may have the same name in different platforms, so I decide that I can add an interactive filter to filter the selection of platforms.
-
-    </center></p>
+        a specific year. In order to address that I made a bar plot of the top 10 games sorted by global sales and the global sale amounts
+        are shown in the x axis. I would like to display all time(1980 to 2020) and in a selected range of the year. Therefore, I added a range slider to select a given
+        range of years that users want to see as well as one single year. As default, the top 10 games from 1980 to 2020 (all times) is shown.
+        If people want to look at a specific year, they can drag the slider handles together focus on one year.
+        The video game may have the same name in different platforms, and sometimes the same game can be popular in different platforms leading to an overlapped bar,
+        so I added a dropdown list to filter the bar based on the selection of platforms. I exclude the platforms that have fewer than 20 records from the selection.
+        The second question asked to show top game genre in each sales region. I decided to use map for visualizing the sales region. There are four regions provided in the data.
+        EU, North America, Japan, and others, I color coded each region on the map to differentiate them (others would be everywhere other than EU, NA and JP).
+        In order to show the top genre, I used a legend to call out the genre name in each region with corresponding colors. Additionally, tooltips are used to show the top genre,
+        when hover over each region on the map. The top genre was filtered and selected by sorting the highest sales in that specific region.
+        The map can also be changes based on the selection of year range and game platform. It is interesting to see how the top genre changes in different game platforms and years.
+        The top genre may be the same in some video game platforms mainly because the selection is too narrowed and probably the same top one game occurs in all regions.
+        The last question asks to choose top publishers in the given genre. In order to do that I used another dropdown for the selection of genre and plotted a donut plot for the top 5 publishers
+        in the given game genre. The corresponding global sales are also shown in the labels on the donut plot. Only the donut plot will be interactive to the genre selection not the map and the bar plot.
+        All three plots can be interactive to the selection of year(s) and game platforms.
+        </p>
+        <p>
+            (I tried to fit the graph and font size on a 24 in monitor, so I apologize if the graphs look squeezed in a smaller laptop screen.)
+        </p>
+        <p style = 'font-weight: bold'>
+            D3 Advantages:
+        </p>
+        <p>
+           * D3 is very powerful in adding interactive elements, meaning that it allows one graph object to contain a lot of information and viewers can gather information from the graph through some interactions.
+            For example, the 3rd graph in my dashboard want to show top publishers of each genre. Instead of having all 12 donut plots (12 genres) on the same page, I use D3 to add interaction for viewer to select genre,
+            so that there is only one plot each time and contains the information he/she need for selecting top publishers based on genre. It helps my visualization concise without losing information.
+        </p>
+        <p>
+           * D3 is also very flexible with customization, meaning that I can take the control of every element of the graph. It allows me to change emphases of the graph based on the specific data set I have.
+            Therefore, it makes graphs to fit individual dataset instead of having the data fit given setups of the graph. It allows creativity in the visualization
+        </p>
+        <p>
+           * The size of the graph from d3 is very flexible as well and it can scale based on individual webpages. Anyone with a web browser should be able to see it without adjusting size accordingly.
+            Also, the zoom and transition effects create more accessibility to the graph. For example, I can zoom in the map to see small countries without sacrificing resolutions.
+            It is really helpful to add details in the graph because viewer can zoom in to see. Additionally, the transition effects allows people to visualize changes along with interactions.
+        </p>
+        <p style = 'font-weight: bold'>
+            D3 Drawbacks:
+        </p>
+        <p>
+           * D3 may not be a best tool for people who are not familiar with web standards. It requires some time to understand the role of each piece of code and where it shows up in the web.
+            it requires some knowledge to connect the script with the web elements and can be hard to debug.
+            If people just need simple visualization, D3 may require too much work for making simple charts.
+        </p>
+        <p>
+           * I do not think it is the best tool for exploratory data analysis, because it requires some understanding of the data for making fancy graphs to visualize them.
+            It requires some planning on how you want the data to be visualized and what kind of information you would like to present before you start plotting.
+            When we do EDA, most of the time we do not have an expectation on how the data would look like, and d3 will not be helpful in this case.
+            It takes a lot of time to plot the figure and to switch it to another type if you find it not working.
+        </p>
+        <p>
+           * In d3, everything starts from scratch so people need to have a sense of relative positions of the graph as well as the scales.
+            Other high end packages or software may have set up the relative scales, but, in d3, you need to position the graph on your own.
+            The position need to be relative to the width and height and the window size. For example, for my map graph,
+            I had set up the scale and position that looks nice on my monitor, but when I open it in the laptop screen, it moves around.
+            Therefore, people use d3 should have a good understanding of the position and scale when they set up the graph, while other packages may set up for you,
+            and you can focus only on the graph itself.
+        </p>
+        <p style = 'font-weight: bold'>
+            Q4:
+        </p>
+        <p>
+            I find 'A Comprehensive Guide to Accessible Data Visualization' really helpful when I making my plot and considering accessibility.
+            It mentioned that the audience should be able to understand the graph in 5 seconds. Therefore, I added labels and legends in all of my graphs to clarify the meanings.
+            The titles of each graph also summarized the goal of each plot. For example, I have the sales labeled beside each bar to show the value. Similarly, in my donut chart,
+            I add labels pointing out the corresponding publishers and the sales amount. In the donut plot labels, since I have a lot of words which can be distracting, I used different
+            font style to emphasize the publisher and the sales are some add-on information for references. All those labels are directly to the bar or the piece of pie.
+            It was a little bit hard to add direct label on the map. I used a colored legend for the corresponding region and top genre.
+            I understand that the article mentioned that we need to pay attention to people who are color blind or with color vision deficiency,
+            so I used tool tips for people to access genre and sales region information on different parts of the map, and I used the stroke to separate the counties on the map.
+            It may not be ideal in this map, because color blind people may not be able to differentiate the regions in this map. I have not figured out how, but a future approach is
+            to add bold stroke around each colored region to improve accessibility. Additionally, I may want to add a pop up effect when the mouse hovers over the region to improve the accessibility.
+            In the donut plot, I have tried the white stroke to differentiate each sections of the pie as mentioned in the article.
+            Instead of using different colors, I used gradient color scale showing the rank of publishers that may be somehow helpful for color blind people.
+            I understand that the slider may be a intricate tool for manipulating the graphs, because it may be hard to focus on one value compare with dropdowns.
+            I tried to make it more accessible by changing the handle to a triangle and have the selected value showed when moving around.
+            Also, I changed the plot title corresponding to the selected year/ platform to make the plot readable.
+        </p>
+        <p style = 'font-weight: bold'>
+            Q5:
+        </p>
+        <p>
+            As I mentioned in the last paragraph, I would like to make highlighted strokes around each sales region in the map and add a pop up effect when hovers.
+            However, the map is made according to the position of each countries. I am able to color each country based on my criteria.
+            I tried to use similar approaches as I color the map, but the stroke are still corresponding to each country not the group of selections.
+            I cannot figure out how to make each region pop out in the map during the given time, so I only go with the tool tips.
+            Also, as mentioned before, a slider may not be very accessible, but because I would like to select a range as well as a individual year, the only choice I can
+            think of is the slider.
+        </p>
     </div>
 
 </body>

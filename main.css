@@ -6,6 +6,7 @@ svg {
 .header {
     padding-bottom: 20px;
     margin-bottom: 20px;
+    box-shadow: 2px 1px 5px lightgrey;
     text-align: center;
 }
 
@@ -16,6 +17,19 @@ svg {
 }
 .center {
     text_align: center;
+}
+
+#dropdown1, #dropdown2 {
+    margin-top: 20px
+    font-size: 14px
+}
+
+#WrittenQ {
+    margin: 30px
+}
+
+p{
+    margin-bottom: 20px
 }
 
 .col-lg-12 {
@@ -30,6 +44,11 @@ svg {
 
 #yearlabel{
     padding: 0 30px;
+    font-size: 14px
+}
+
+#yearrange text{
+    font-size: 14px
 }
 .slider-handle.triangle {
 	font-size:20px;
@@ -37,11 +56,11 @@ svg {
 
 
 text{
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .tick text{
-    font-size: 15px;
+    font-size: 14px;
     fill: #635F5D;
 }
 
@@ -50,10 +69,10 @@ text{
 }
 
 .label_text{
-    font-size: 15px;
+    font-size: 13px;
     fill: #635F5D;
 }
-/* Include any custom CSS styling here! */
+
 .sphere{
   fill: #bde0fe;
   opacity: 0.6;
@@ -67,7 +86,7 @@ text{
 .tooltip{
     background: white;
     background-opacity: 0.2;
-    font-size: 14px;
+    font-size: 13px;
 }
 .donut_label{
     fill: #635F5D

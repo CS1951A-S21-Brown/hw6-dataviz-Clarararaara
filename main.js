@@ -7,7 +7,7 @@ const NUM_EXAMPLES = 10; //select top 10
 // Assumes the same graph width, height dimensions as the example dashboard. Feel free to change these if you'd like
 let graph_1_width = MAX_WIDTH/2 +80, graph_1_height = 400;
 let graph_2_width = MAX_WIDTH/2 + 150 , graph_2_height = 600;
-let graph_3_width = MAX_WIDTH/2, graph_3_height = 500;
+let graph_3_width = MAX_WIDTH/2 , graph_3_height = 500;
 
 // set Default
 let data;
