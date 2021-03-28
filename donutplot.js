@@ -3,39 +3,30 @@
 const innerwidth_3 = graph_3_width - margin.left - margin.right;
 const innerheight_3 = graph_3_height - margin.top - margin.bottom;
 
-const radius = Math.min(graph_3_width, graph_3_height) /2;
+const radius = Math.min(innerwidth_3, innerheight_3) /2;
+//reference: https://www.d3-graph-gallery.com/graph/donut_label.html
 
-let svg_donut = d3.select("#graph3")
+let svg_3 = d3.select("#graph3")
     .append("svg")
     .attr("width", graph_3_width)     // HINT: width
     .attr("height", graph_3_height)     // HINT: height
     .append("g")
     .attr("transform", `translate(${margin.left}, ${margin.top})`);
 //donut group
-donutG = svg_donut.append("g");
+donutG = svg_3.append("g");
 
-
+//for donut plot
+const svg_donut = donutG.attr("transform", `translate(${innerwidth_3/2}, ${innerheight_3/2})`);
 
 let donutColorScale = d3.scaleOrdinal()
           .range(d3.quantize(d3.interpolateHcl("#602437", "#ff9ebb"), 5))
 // Add chart title
-let donutTitle = svg_donut.append("text")
+let donutTitle = donutG.append("text")
     .attr('class', 'title')
-    .attr("transform", `translate(${(innerwidth_1) / 2}, -5)`)       // HINT: Place this at the top middle edge of the graph
+    .attr("transform", `translate(${0}, ${-innerheight_3/2})`)       // HINT: Place this at the top middle edge of the graph
     .style("text-anchor", "middle");
 
-
-    d3.csv("./data/video_games.csv").then(function(data) {
-            // Parse the data
-            // parse string into numbers(int/float)
-            data.forEach(d=> {d.Rank = parseInt(d.Rank);
-                              d.Year = parseInt(d.Year);
-                              d.NA_Sales = parseFloat(d.NA_Sales);
-                              d.EU_Sales = parseFloat(d.EU_Sales);
-                              d.JP_Sales = parseFloat(d.JP_Sales);
-                              d.Other_Sales = parseFloat(d.Other_Sales);
-                              d.Global_Sales = parseFloat(d.Global_Sales);
-                               });
+function updateDonut(start, end, select_plat, select_genre){
             // filter the data based on year and platform
             let filter_data = data.filter(d => {return yearrange(start, end, d.Year);}) //choose year range
                                 .filter(d => {return chooseSelection(select_plat, d.Platform);}) // choose platform
@@ -66,30 +57,90 @@ let donutTitle = svg_donut.append("text")
             let pieData = pie(Toppublisher);
     //        console.log(pieData);
             const arc = d3.arc()
-                        .innerRadius(radius/Math.PI)
-                        .outerRadius(radius * (2/3));
+                        .innerRadius(radius/2.5)
+                        .outerRadius(radius*0.8);
+            const outerArc = d3.arc()
+                        .innerRadius(radius*0.8 +8)
+                        .outerRadius(radius*0.8 +8);
 
-            svg_donut
-            .selectAll('arc')
-            .data(pieData)
+            let donutplot = svg_donut.selectAll('arc').data(pieData);
+            donutplot
+                .enter()
+                .append('path')
+                .merge(donutplot)
+                .transition()
+                .ease(d3.easeCircle)
+                .duration(1000)
+                .attr('d', arc)
+                .attr('fill', d => donutColorScale(colorValue(d.data)))
+                .attr('stroke', 'white') // add strokes between each section to make the division clear
+                .attr('stroke-width', '4px');
+
+            svg_donutLabel = svg_donut.selectAll('label').data(pieData);
+
+            const labelLine = function (d){
+                const start = arc.centroid(d); // line insertion in the pie
+                const turning = outerArc.centroid(d); // the turning positon
+                const end = outerArc.centroid(d); // position where label starts
+                const angle = d.startAngle + (d.endAngle - d.startAngle) / 2
+                end[0] = (radius*0.9) * (angle < Math.PI ? 1 : -1); // multiply by 1 or -1 to put it on the right or on the left
+                return [start, turning, end]
+            };
+            // add polylines
+            svg_donutLabel
             .enter()
-            .append('path')
-            .attr("transform", `translate(${margin.left}, ${margin.top*2 +50})`)
-            .attr('d', arc)
-            .attr('fill', d => donutColorScale(colorValue(d.data)))
-            .attr('stroke', 'white') // add strokes between each section to make the division clear
-            .attr('stroke-width', '4px')
-            .style("opacity", 0.9)
+            .append('polyline') //append to a subgroup called polyline
+            .merge(svg_donutLabel)
             .transition()
-            .duration(1000);
+            .duration(1000)
+                .attr('stroke', '#635F5D')
+                .style('fill', 'none')
+                .attr('stroke-width', '2px')
+                .attr('points', labelLine) // adjust the length and position accordingly
+;
 
-            let publisherLabel = donutG.selectAll("text").data(Toppublisher);
+            const textLabel = function (d){
+                const labelPos = outerArc.centroid(d);
+                const angle = d.startAngle + (d.endAngle - d.startAngle) / 2
+                labelPos[0] = (radius*0.9) * (angle < Math.PI ? 1 : -1);
+                return `translate(${labelPos})`
+            }
+            const labelDir = function(d){
+                const angle = d.startAngle + (d.endAngle - d.startAngle) / 2
+                return (angle < Math.PI ? 'start' : 'end')
+            }
+            // add label text
+            svg_donutLabel
+            .enter()
+            .append('text')
+            .merge(svg_donutLabel)
+//            .transition()
+//            .duration(1000)
+            .attr('class', 'donut_label')
+            .text(d => d.data.key )
+            .attr('transform', textLabel)
+            .style('text-anchor', labelDir)
+            .style('font-weight', 'bold');
 
-
+            svg_donutLabel
+            .enter()
+            .append('text')
+            .merge(svg_donutLabel)
+//            .transition()
+//            .duration(1000)
+            .attr('class', 'donut_label')
+            .text(d => 'Total Global Sales: ' + d.data.sales +' M')
+            .attr('transform', textLabel)
+            .attr('y', 18)
+            .style('text-anchor', labelDir)
+            .style('font-style', 'italic')
+            .style('font-size', '13.5px');
             // edit Title
             donutTitle
             .text('Top 5 Publishers of ' + platdisplay(select_genre) +' Games ' + yeardisplay(start, end));
 
-            });
+            donutplot.exit().remove();
+            svg_donutLabel.exit().remove();
 
+};
 

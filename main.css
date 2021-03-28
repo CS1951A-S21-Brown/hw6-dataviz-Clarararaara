@@ -13,6 +13,25 @@ svg {
     padding-top: 20px;
     text-align: center;
 }
+.center {
+    text_align: center;
+}
+
+.col-lg-12 {
+    padding: 0;
+}
+
+.annotation{
+    font-size: 12px;
+    fill: #635F5D;
+    font-style: italic;
+}
+
+#yearlabel{
+    padding: 0 30px;
+}
+
+
 
 text{
     font-size: 15px;
@@ -47,3 +66,10 @@ text{
     background-opacity: 0.2;
     font-size: 14px;
 }
+.donut_label{
+    fill: #635F5D
+}
+.dropdown_text{
+    font-weight: bold
+}
+

@@ -47,79 +47,84 @@ let title = svg.append("text")
     .attr("transform", `translate(${(innerwidth_1) / 2}, -5)`)       // HINT: Place this at the top middle edge of the graph
     .style("text-anchor", "middle");
 
+//
+//function updateBar(start, end){
+//    d3.csv("./data/video_games.csv").then(function(data) {
+//            // Parse the data
+//            // parse string into numbers(int/float)
+//            data.forEach(d=> {d.Rank = parseInt(d.Rank);
+//                              d.Year = parseInt(d.Year);
+//                              d.NA_Sales = parseFloat(d.NA_Sales);
+//                              d.EU_Sales = parseFloat(d.EU_Sales);
+//                              d.JP_Sales = parseFloat(d.JP_Sales);
+//                              d.Other_Sales = parseFloat(d.Other_Sales);
+//                              d.Global_Sales = parseFloat(d.Global_Sales);
+//                               });
+//            // filter the data based on year and platform
+//            let filter_data = data.filter(d => {return yearrange(start, end, d.Year);})
+//                                .filter(d => {return chooseSelection(select_plat, d.Platform);})
+function updateBar(start, end, select_plat){
+            // filter the data based on year and platform
+//            console.log(data);
+            let filter_data = data.filter(d => {return yearrange(start, end, d.Year);})
+                                .filter(d => {return chooseSelection(select_plat, d.Platform);})
 
+            let comparator = function(a, b){ return b.Global_Sales - a.Global_Sales;}
+            let Topdata = cleanData(filter_data, comparator, NUM_EXAMPLES);
+//            console.log(Topdata);
 
-d3.csv("./data/video_games.csv").then(function(data) {
-        // Parse the data
-        // parse string into numbers(int/float)
-        data.forEach(d=> {d.Rank = parseInt(d.Rank);
-                          d.Year = parseInt(d.Year);
-                          d.NA_Sales = parseFloat(d.NA_Sales);
-                          d.EU_Sales = parseFloat(d.EU_Sales);
-                          d.JP_Sales = parseFloat(d.JP_Sales);
-                          d.Other_Sales = parseFloat(d.Other_Sales);
-                          d.Global_Sales = parseFloat(d.Global_Sales);
-                           });
-        // filter the data based on year and platform
-        let filter_data = data.filter(d => {return yearrange(start, end, d.Year);})
-                            .filter(d => {return chooseSelection(select_plat, d.Platform);})
+            //define x and y value
+            const xValue = function(d){return d.Global_Sales;}
+            const yValue = function(d){return d.Name}
 
-        let comparator = function(a, b){ return b.Global_Sales - a.Global_Sales;}
-        let Topdata = cleanData(filter_data, comparator, NUM_EXAMPLES);
-        //console.log(Topdata);
+            //x scale
+            x.domain([0,d3.max(Topdata, xValue)]);
 
-        //define x and y value
-        const xValue = function(d){return d.Global_Sales;}
-        const yValue = function(d){return d.Name}
+            //y scale
+            y.domain(Topdata.map(yValue));
 
-        //x scale
-        x.domain([0,d3.max(Topdata, xValue)]);
+            //y axis text
+            y_axis_label.call(d3.axisLeft(y).tickSize(0).tickPadding(5));
+            //set color
+            let color = d3.scaleOrdinal()
+                .domain(Topdata.map(yValue))
+                .range(d3.quantize(d3.interpolateHcl("#FF8C00", "#FFD700"), NUM_EXAMPLES));
 
-        //y scale
-        y.domain(Topdata.map(yValue));
+            // add bar plot
+            let bars = svg.selectAll("rect").data(Topdata);
+            bars.enter()
+                .append("rect")
+                .merge(bars)
+                .attr("fill", d => color(yValue(d)))
+                .style('opacity', 0.8)
+                .transition()
+                .duration(1000)
+                .attr("x", x(0))
+                .attr("y", d => y(yValue(d)))
+                .attr("width", d => x(xValue(d)))
+                .attr("height",  y.bandwidth());
 
-        //y axis text
-        y_axis_label.call(d3.axisLeft(y).tickSize(0).tickPadding(5));
-        //set color
-        let color = d3.scaleOrdinal()
-            .domain(data.map(yValue))
-            .range(d3.quantize(d3.interpolateHcl("#FF8C00", "#FFD700"), NUM_EXAMPLES));
+            let sales = barG.selectAll("text").data(Topdata);
 
-        // add bar plot
-        let bars = svg.selectAll("rect").data(Topdata);
-        bars.enter()
-            .append("rect")
-            .merge(bars)
-            .attr("fill", d => color(yValue(d)))
-            .style('opacity', 0.8)
-            .transition()
-            .duration(1000)
-            .attr("x", x(0))
-            .attr("y", d => y(yValue(d)))
-            .attr("width", d => x(xValue(d)))
-            .attr("height",  y.bandwidth());
+            // Edit label text
+            sales.enter()
+                .append("text")
+                .merge(sales)
+                .transition()
+                .duration(1000)
+                .attr('class', 'label_text')
+                .attr("x", d => x(xValue(d))+10) //xscale offset
+                .attr("y", d => y(yValue(d))+15) //yscale offset
+                .style("text-anchor", "start")
+                .text(xValue);
 
-        let sales = barG.selectAll("text").data(Topdata);
+            // y_axis_text.text('Names');
 
-        // Edit label text
-        sales.enter()
-            .append("text")
-            .merge(sales)
-            .transition()
-            .duration(1000)
-            .attr('class', 'label_text')
-            .attr("x", d => x(xValue(d))+10) //xscale offset
-            .attr("y", d => y(yValue(d))+15) //yscale offset
-            .style("text-anchor", "start")
-            .text(xValue);
+            title.text('Top 10 Most Popular ' + platdisplay(select_plat) +' Games ' + yeardisplay(start, end));
 
-        // y_axis_text.text('Names');
-
-        title.text('Top 10 Most Popular ' + platdisplay(select_plat) +' Games ' + yeardisplay(start, end));
-
-        // Remove elements not in use if fewer groups in new dataset
-        bars.exit().remove();
-        sales.exit().remove();
-});
-
+            // Remove elements not in use if fewer groups in new dataset
+            bars.exit().remove();
+            sales.exit().remove();
+    };
+//}
 

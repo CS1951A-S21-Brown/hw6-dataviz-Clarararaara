@@ -7,25 +7,63 @@ const NUM_EXAMPLES = 10; //select top 10
 // Assumes the same graph width, height dimensions as the example dashboard. Feel free to change these if you'd like
 let graph_1_width = MAX_WIDTH , graph_1_height = 400;
 let graph_2_width = MAX_WIDTH , graph_2_height = 550;
-let graph_3_width = MAX_WIDTH , graph_3_height = 400;
+let graph_3_width = MAX_WIDTH , graph_3_height = 500;
 
-/*
-let slider = new Slider('#yearrange', {})
-// update start and end year on sliderStop
-slider.on('sliderStop', function(range){
+// set Default
+let data;
+let start = 1980;
+let end = 2020;
+let select_plat = 'All'
+let select_genre = 'Action'
+
+let yearslider = new Slider('#yearrange', {});
+
+let platformDropdown = d3.select('#selectPlatform');
+
+let genreDropdown = d3.select('#genreSelect');
+
+d3.csv("./data/video_games.csv").then(function(dat) {
+            // Parse the data
+            // parse string into numbers(int/float)
+            dat.forEach(d=> {d.Rank = parseInt(d.Rank);
+                              d.Year = parseInt(d.Year);
+                              d.NA_Sales = parseFloat(d.NA_Sales);
+                              d.EU_Sales = parseFloat(d.EU_Sales);
+                              d.JP_Sales = parseFloat(d.JP_Sales);
+                              d.Other_Sales = parseFloat(d.Other_Sales);
+                              d.Global_Sales = parseFloat(d.Global_Sales);
+                               });
+            data = dat;
+//            console.log(data);
+            updateDashboard();
+            updateMap(1980, 2020, 'All'); //Not able to figure out the interaction with map, so set default for the map graph
+            });
+
+//let data1 = loadData()
+//
+//console.log(data1)
+
+//// update start and end year on sliderStop
+yearslider.on('slideStop', function(range){
     start = range[0];
     end = range[1];
-    updateGraph(start, end, )})
-*/
+//    console.log(range);
+    updateDashboard()});
 
-let select = d3.select('#genreSelect').on('change', update)
+// update selection from both dropdowns for platform and game genre
+platformDropdown.on('change',function (selection){
+            select_plat = this.value;
+            updateDashboard();
+});
 
-// set constant
+genreDropdown.on('change',function (selection){
+            select_genre = this.value;
+            updateDashboard();
+});
 
-let start = 1981;
-let end = 2017;
-let select_plat = 'All'
-let select_genre = 'Sports'
+
+
+
 
 
 
@@ -41,10 +79,10 @@ function cleanData(data, comparator, numExamples) {
 
 // Filter data based on start and end year
 function yearrange(start, end, year){
-    if(start === end){
-        return (year === parseInt(start));
+    if(start !== end){
+        return (year >= parseInt(start)) && (year <= parseInt(end));
     }else{
-        return (year >= parseInt(start) && parseInt(year) <= parseInt(end));
+        return year === parseInt(start);
     }
 }
 
@@ -75,11 +113,9 @@ function platdisplay(select_plat){
     }
 }
 
-function update(){
-    let select_genre = select.property('selectedOptions')[0].value;
-    updateDonut(select_genre)
-}
 
-function updateGraph(start, end){
-     dataupdate(start, end)
+
+function updateDashboard(){
+       updateBar(start, end, select_plat);
+       updateDonut(start, end, select_plat, select_genre);
 }
