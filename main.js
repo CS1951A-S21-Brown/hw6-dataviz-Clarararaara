@@ -1,13 +1,13 @@
 // Add your JavaScript code here
 const MAX_WIDTH = Math.max(1080, window.innerWidth);
 const MAX_HEIGHT = 2000;
-const margin = {top: 60, right: 450, bottom: 60, left: 500};
+const margin = {top: 60, right: 200, bottom: 60, left: 150};
 const NUM_EXAMPLES = 10; //select top 10
 
 // Assumes the same graph width, height dimensions as the example dashboard. Feel free to change these if you'd like
-let graph_1_width = MAX_WIDTH , graph_1_height = 400;
-let graph_2_width = MAX_WIDTH , graph_2_height = 550;
-let graph_3_width = MAX_WIDTH , graph_3_height = 500;
+let graph_1_width = MAX_WIDTH/2 +80, graph_1_height = 400;
+let graph_2_width = MAX_WIDTH/2 + 150 , graph_2_height = 600;
+let graph_3_width = MAX_WIDTH/2, graph_3_height = 500;
 
 // set Default
 let data;
@@ -36,7 +36,7 @@ d3.csv("./data/video_games.csv").then(function(dat) {
             data = dat;
 //            console.log(data);
             updateDashboard();
-            updateMap(1980, 2020, 'All'); //Not able to figure out the interaction with map, so set default for the map graph
+
             });
 
 //let data1 = loadData()
@@ -117,5 +117,6 @@ function platdisplay(select_plat){
 
 function updateDashboard(){
        updateBar(start, end, select_plat);
+       updateMap(start, end,  select_plat); //Map and bar will change based on year and platform
        updateDonut(start, end, select_plat, select_genre);
 }

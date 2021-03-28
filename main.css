@@ -6,6 +6,7 @@ svg {
 .header {
     padding-bottom: 20px;
     margin-bottom: 20px;
+    text-align: center;
 }
 
 .header > h3, h5 {
@@ -22,7 +23,7 @@ svg {
 }
 
 .annotation{
-    font-size: 12px;
+    font-size: 13px;
     fill: #635F5D;
     font-style: italic;
 }
@@ -30,7 +31,9 @@ svg {
 #yearlabel{
     padding: 0 30px;
 }
-
+.slider-handle.triangle {
+	font-size:20px;
+}
 
 
 text{

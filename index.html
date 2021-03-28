@@ -26,7 +26,8 @@
                 <label id="yearlabel" for="yearrange">Year Range: </label>
                 <input id = "yearrange" type="text" data-provide="slider"
                        data-slider-min="1980" data-slider-max="2020"
-                       data-slider-value="[1981, 2017]" data-slider-step="1" />
+                       data-slider-value="[1980, 2020]" data-slider-step="1"
+                        data-slider-handle = 'triangle'/>
             </div>
              <!-- Add a dropdown for game platforms-->
             <div class="center">
@@ -65,7 +66,7 @@
             <div id="graph1"></div>
             <p ><center class = 'annotation'>* Note that if you select all platforms, there will be a chance that the same game name occurs more than once with overlapped bars </center></p>
             <div id="graph2"></div><br/>
-            <p ><center class = 'annotation'>* Hover over the map to see the top genre in each sales region and scroll to zoom in and out </center></p>
+            <p ><center class = 'annotation'>* Hover over the map to see the top genre in each sales region and scroll the page to zoom in and out </center></p>
             <div class = 'center'>
                 <span class = 'dropdown_text'>
                     Select Game Genre:
@@ -85,8 +86,11 @@
                     <option value = 'Simulation'>Strategy</option>
                 </select>
             </div>
+            <div class="col-lg-12">
             <div id="graph3"></div>
         </div>
+            <p ><center class = 'annotation'>* Select game genre to see the top 5 publishers in the field given the year range and platform selected </center></p>
+    </div>
     </div>
     </div>
     <!--Feel free to add more JavaScript files as needed-->
@@ -94,14 +98,17 @@
     <script type="text/javascript" src="barplot.js"></script>
     <script type="text/javascript" src="map.js"></script>
     <script type="text/javascript" src="donutplot.js"></script>
-
+    <div class="header">
+        <h3>&laquo; Written Question &raquo;</h3>
+    </div>
     <div id="WrittenQ">
         <p><center>
         The dataset I picked is the video game data. After inspecting the data, I understand that the dataset had the name of games,
         platforms, publishers, and sales in different regions. For the first question I need to display the top 10 games of all time or
         a specific year. In order to address that I planned to make a bar plot of the top 10 games sorted by global sales and the sale amounts
         are shown in the x axis. I would like to display all time and in a selected range of the year. Therefore, I added a range slider to select given
-        range of years that users want to see. As default, the top 10 games from 1980 to 2020 (all times) is shown. 
+        range of years that users want to see. As default, the top 10 games from 1980 to 2020 (all times) is shown. If people want to look at a specific year,
+        they can drag the slider handles together focus on one year.
         The video game may have the same name in different platforms, so I decide that I can add an interactive filter to filter the selection of platforms.
 
     </center></p>

@@ -6,27 +6,30 @@ const innerheight_3 = graph_3_height - margin.top - margin.bottom;
 const radius = Math.min(innerwidth_3, innerheight_3) /2;
 //reference: https://www.d3-graph-gallery.com/graph/donut_label.html
 
-let svg_3 = d3.select("#graph3")
-    .append("svg")
-    .attr("width", graph_3_width)     // HINT: width
-    .attr("height", graph_3_height)     // HINT: height
-    .append("g")
-    .attr("transform", `translate(${margin.left}, ${margin.top})`);
-//donut group
-donutG = svg_3.append("g");
-
-//for donut plot
-const svg_donut = donutG.attr("transform", `translate(${innerwidth_3/2}, ${innerheight_3/2})`);
-
-let donutColorScale = d3.scaleOrdinal()
-          .range(d3.quantize(d3.interpolateHcl("#602437", "#ff9ebb"), 5))
-// Add chart title
-let donutTitle = donutG.append("text")
-    .attr('class', 'title')
-    .attr("transform", `translate(${0}, ${-innerheight_3/2})`)       // HINT: Place this at the top middle edge of the graph
-    .style("text-anchor", "middle");
 
 function updateDonut(start, end, select_plat, select_genre){
+            d3.select("#graph3").select("svg").remove();
+
+            let svg_3 = d3.select("#graph3")
+                .append("svg")
+                .attr("width", graph_3_width)     // HINT: width
+                .attr("height", graph_3_height)     // HINT: height
+                .append("g")
+                .attr("transform", `translate(${margin.left}, ${margin.top})`);
+                        //donut group
+            donutG = svg_3.append("g");
+
+            //for donut plot
+            const svg_donut = donutG.attr("transform", `translate(${innerwidth_3/2}, ${innerheight_3/2})`);
+
+            let donutColorScale = d3.scaleOrdinal()
+                      .range(d3.quantize(d3.interpolateHcl("#602437", "#ff9ebb"), 5))
+            // Add chart title
+            let donutTitle = donutG.append("text")
+                .attr('class', 'title')
+                .attr("transform", `translate(${0}, ${-innerheight_3/2})`)       // HINT: Place this at the top middle edge of the graph
+                .style("text-anchor", "middle");
+
             // filter the data based on year and platform
             let filter_data = data.filter(d => {return yearrange(start, end, d.Year);}) //choose year range
                                 .filter(d => {return chooseSelection(select_plat, d.Platform);}) // choose platform
@@ -139,8 +142,6 @@ function updateDonut(start, end, select_plat, select_genre){
             donutTitle
             .text('Top 5 Publishers of ' + platdisplay(select_genre) +' Games ' + yeardisplay(start, end));
 
-            donutplot.exit().remove();
-            svg_donutLabel.exit().remove();
 
 };
 

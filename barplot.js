@@ -9,7 +9,7 @@ let svg = d3.select("#graph1")
     .attr("width", graph_1_width)     // HINT: width
     .attr("height", graph_1_height)     // HINT: height
     .append("g")
-    .attr("transform", `translate(${margin.left}, ${margin.top})`);
+    .attr("transform", `translate(${margin.left +150}, ${margin.top})`);
 
 // static bar plot over all years and all platform
 // get bar plot group

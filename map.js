@@ -3,35 +3,7 @@
 // set graph2 inner width and height
 const innerwidth_2 = graph_2_width - margin.left - margin.right;
 const innerheight_2 = graph_2_height - margin.top - margin.bottom;
-let regionSelect = 'Europe'
 
-let svgG = d3.select("#graph2")
-    .append("svg")
-    .attr("width", graph_2_width)     // HINT: width
-    .attr("height", graph_2_height);     // HINT: height
-
-const projection = d3.geoNaturalEarth1();
-const pathGenerator = d3.geoPath().projection(projection)
-//projection reference: https://github.com/d3/d3-geo
-
-const svg_map = svgG.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`) //set a mapgroup with the given position
-const svg_main = svgG.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`)
-
-//add in zoom effect
-svgG.call(d3.zoom().on('zoom', () => {
-    svg_map.attr('transform', d3.event.transform)
-  })); // cannot figure out why the map switches place when using a smaller screen
-
-//Add sphere as the Earth background
-svg_map.append('path')
-       .attr('class', 'sphere')
-       .attr('d', pathGenerator({type:'Sphere'}));
-
-
-
- // set the legend group with the position
-const legendG = svg_main.append('g')
-    .attr('transform', `translate(${-margin.left/4}, ${innerheight_2-margin.bottom})`)
 
 let tooltip = d3.select("#graph2")     // HINT: div id for div containing scatterplot
         .append("div")
@@ -47,6 +19,34 @@ let colorScale = d3.scaleOrdinal().range(['#6a994e', '#6a4c93', '#e76f51', '#d81
 */
 
 function updateMap(start_year, end_year, plat){
+    d3.select("#graph2").select("svg").remove();
+
+    let svgG = d3.select("#graph2")
+    .append("svg")
+    .attr("width", graph_2_width)     // HINT: width
+    .attr("height", graph_2_height)     // HINT: height
+    .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+    const projection = d3.geoNaturalEarth1().scale(graph_2_width/7);
+    const pathGenerator = d3.geoPath().projection(projection)
+    //projection reference: https://github.com/d3/d3-geo
+
+    const svg_map = svgG.append('g') //set a mapgroup with the given position
+    const svg_main = svgG.append('g')//.attr('transform', `translate(${margin.left}, ${margin.top})`)
+
+    //add in zoom effect
+    svgG.call(d3.zoom().on('zoom', () => {
+        svg_map.attr('transform', d3.event.transform)
+      })); // cannot figure out why the map switches place when using a smaller screen
+
+    //Add sphere as the Earth background
+    svg_map.append('path')
+           .attr('class', 'sphere')
+           .attr('d', pathGenerator({type:'Sphere'}));
+     // set the legend group with the position
+    const legendG = svg_main.append('g')
+        .attr('transform', `translate(${20}, ${innerheight_2/2+ 150})`)
+    //load data for map
     Promise.all([
       d3.tsv('https://unpkg.com/world-atlas@1.1.4/world/110m.tsv'), //contains country detailed information
     // use tsvdata.continent for Europe and North America
@@ -189,7 +189,7 @@ function updateMap(start_year, end_year, plat){
            svg_main
            .append("text")
            .attr('class', 'title')
-            .attr("transform", `translate(${(innerwidth_2/2)},-15)`)
+            .attr("transform", `translate(${(innerwidth_2/2)+70},15)`)
             .attr("text-anchor", "middle")
             .text("Most Popular  " + platdisplay(select_plat) +' Game ' + "Genre in 4 Sales Regions " + yeardisplay(start_year, end_year));
 
